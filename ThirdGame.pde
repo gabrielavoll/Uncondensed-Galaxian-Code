@@ -1,8 +1,8 @@
-int WIDTH_ = 800;
+int WIDTH_ = 800; //<>//
 int HEIGHT_ = 650;
 Space spaceObj;
 Ship shipObj;
-Controls gameControls;
+Controls gameControls; //<>//
 Bullets bulletsObj;
 EnemyBullets enemeyBulletsObj;
 Enemy enemyObj;
@@ -12,7 +12,7 @@ PFont Akashi48;
 PFont Akashi24;
 PFont Akashi36;
 
-void setup(){
+void setup(){ //<>//
   size(800,650);
   spaceObj = new Space();
   gameControls = new Controls();
@@ -20,12 +20,12 @@ void setup(){
   gameControls.restartGame();
   Akashi48 = createFont("Akashi", 48);
   Akashi36 = createFont("Akashi", 36);
-  Akashi24 = createFont("Akashi", 24);
+  Akashi24 = createFont("Akashi", 24); //<>//
 }
 
 
 void draw(){
-  if(gameControls.gameStatus == "start"){ 
+  if(gameControls.gameStatus == "start"){  //<>//
     spaceObj.display();
     startScreen();
   }if(gameControls.gameStatus == "transport"){
@@ -45,5 +45,4 @@ void draw(){
     bulletsObj.display();
     enemeyBulletsObj.display();
   }
-
-
+}
