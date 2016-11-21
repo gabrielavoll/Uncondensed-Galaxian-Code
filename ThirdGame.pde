@@ -1,4 +1,4 @@
-int WIDTH_ = 800; //<>//
+int WIDTH_ = 800;
 int HEIGHT_ = 650;
 Space spaceObj;
 Ship shipObj;
@@ -12,21 +12,21 @@ PFont Akashi48;
 PFont Akashi24;
 PFont Akashi36;
 
-void setup(){ //<>//
-  size(800,650);
+void setup(){
+  size(800,650); //<>//
   spaceObj = new Space();
   gameControls = new Controls();
   scoreObj = new Score();
   gameControls.restartGame();
   Akashi48 = createFont("Akashi", 48);
   Akashi36 = createFont("Akashi", 36);
-  Akashi24 = createFont("Akashi", 24); //<>//
+  Akashi24 = createFont("Akashi", 24);
 }
 
 
 void draw(){
-  if(gameControls.gameStatus == "start"){
-    spaceObj.bk();
+  if(gameControls.gameStatus == "start"){ //<>//
+    spaceObj.bk(); //<>//
     startScreen();
     spaceObj.display();
   }if(gameControls.gameStatus == "transport"){
@@ -45,6 +45,10 @@ void draw(){
     armyObj.display();
     shipObj.display();
     bulletsObj.display();
-    enemeyBulletsObj.display();
+    enemeyBulletsObj.display(); 
+  } else if (gameControls.gameStatus == "lose-name"){
+     spaceObj.bk();
+    spaceObj.display();
+    loseScreenName();
   }
 }

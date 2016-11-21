@@ -23,7 +23,7 @@ class Score {
     noStroke();
     for ( int i = 0; i < topScores.length; i++){
       text( topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i), WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4 + 25, baseHeight + (40 * i), 2*WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i), 2*WIDTH_/3, height);
     }
   }
 
@@ -53,7 +53,7 @@ class Score {
       if( shipScore <= topScores[i].score ) yourScorePosition++;
     }
     print("yourScorePosition"); print(yourScorePosition);
-    HighScoreHolder addition = new HighScoreHolder( "ANON", shipScore);
+    HighScoreHolder addition = new HighScoreHolder( gameControls.nameInput, shipScore);
     topScores = (HighScoreHolder [])splice(topScores, addition, yourScorePosition);
     if(yourScorePosition == 0) highScore = shipScore;
     topScores = (HighScoreHolder [])subset(topScores, 0, 5);
@@ -126,8 +126,8 @@ class Score {
       shipObj = new Ship(false);
       shipObj.slideIn();
     } else {
-      gameControls.gameLose(); 
-      loseScreen();
+      gameControls.gameLoseName(); 
+      loseScreenName();
     }
   }
 }

@@ -8,7 +8,7 @@ void startScreen(){
   text("Galaxian Replica",0,height/3.5,width, height); 
   textFont(Akashi24);
   text("click to start",0, height/3.5 + 100, width, height);
-  scoreObj.displayTopHighscore( height/3.5 + 175 );
+  scoreObj.displayTopHighscore( int(height/3.5 + 225) );
 }
 
 void levelDisplay(){
@@ -30,7 +30,7 @@ void levelDisplay(){
 
 void pauseScreen(){
   rectMode(CORNER);
-  fill(0, 70); 
+  fill(0, 170); 
   noStroke();
   rect(0,0,width,height); 
   textAlign(CENTER); 
@@ -42,10 +42,53 @@ void pauseScreen(){
   text("Press p to continue playing " ,0,height/3 + 100 ,width, height); 
 }
 
+
+void loseScreenName(){
+  rectMode(CORNER);
+  noStroke();
+  fill(0, 170); 
+  rect(0,0,width,height); 
+  textAlign(CENTER); 
+  textLeading(20); 
+  fill(255);
+  textFont(Akashi48);
+  text("You lost!",0,height/5 - 50,width, height); 
+  textFont(Akashi24);
+  text("Your Score: " + scoreObj.shipScore,0,height/5 +20 ,width, height);
+  enterName();
+
+  textFont(Akashi24);
+  text( "press enter to continue", 0, int( width/3 * 1.8), width, height);
+}
+
+void enterName(){
+  fill(0);
+  rect( width/2-90, height/2, 180, 95);
+  stroke(255);
+  strokeWeight(5);
+  fill(0, 50);
+  rect(width/2-90, height/2, 180,60); 
+  strokeWeight(3);
+  line( width/2-75, height/2 + 50, width/2-35, height/2 +50 );
+  line( width/2-20, height/2 + 50, width/2+ 20, height/2 + 50 );
+  line( width/2+35, height/2 + 50, width/2+75, height/2 + 50 );
+  
+  fill(255);
+  int baseLeft = gameControls.activeInputIndex;
+  strokeWeight(5);
+  triangle( (width/2-55) + (baseLeft * 55), height/2 + 75, (width/2-67) + (baseLeft * 55), height/2 + 90, (width/2-43) + (baseLeft * 55), height/2 + 90);
+  textFont(Akashi36);
+  text( gameControls.nameInput[0], width/2-75, height/2  + 15, 40, 40 );
+  text( gameControls.nameInput[1] , width/2-20, height/2  + 15, 40, 40 );
+  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 );
+   
+  
+}
+
 void loseScreen(){
   rectMode(CORNER);
   noStroke();
-  fill(200, 80); 
+  fill(0, 170); 
   rect(0,0,width,height); 
   fill(100,255,255); 
   rect(width/2-90, height - 150, 180,50); 
@@ -55,14 +98,14 @@ void loseScreen(){
   textLeading(20); 
   fill(255);
   textFont(Akashi48);
-  text("You lost!",0,height/5,width, height); 
+  text("You lost!",0,height/5 - 50,width, height); 
   textFont(Akashi24);
-  text("Your Score: " + scoreObj.shipScore,0,height/5 + 50 ,width, height); 
+  text("Your Score: " + scoreObj.shipScore,0,height/5 + 20 ,width, height); 
   fill(0);
   text("Try Again?", width/2-75, height - 135, 150,50); 
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
-  scoreObj.displayTopHighscore( height/3.5 + 75);
+  scoreObj.displayTopHighscore(int( height/3.5 + 75));
 }
 
 void winScreen(){

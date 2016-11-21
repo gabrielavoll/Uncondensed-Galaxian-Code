@@ -2,9 +2,13 @@ class Controls {
  boolean right; 
  boolean left;
  boolean gun;
- String gameStatus = "start";
+ String nameInput = "AAA";
+ int activeInputIndex = 0; 
+ String gameStatus = "lose-name";
  
  void restartGame() {
+  activeInputIndex = 0; 
+  nameInput = "AAA";
   right=false; left= false; 
   bulletsObj = new Bullets();
   armyObj = new EnemyArmy(39);
@@ -34,16 +38,49 @@ class Controls {
    }
  }
 
- void gameLose(){ 
-   gameStatus = "lose";
-   scoreObj.saveHighScore();
- }
+ void gameLose(){ gameStatus = "lose"; }
+ void gameLoseName(){ gameStatus = "lose-name"; }
  void rightOn(){ right=true; }
  void rightOff(){ right=false; }
  void leftOn(){ left=true; }
  void leftOff(){ left=false; }
  void gunOn(){ gun=true; }
  void gunOff(){ gun=false; }
+ 
+ void rightIndexShift(){ 
+   if( activeInputIndex < 2) activeInputIndex++; 
+   enterName();
+ }
+ void leftIndexShift(){ 
+   if( activeInputIndex > 0) activeInputIndex--; 
+   enterName();
+ }
+ void incrementActiveInput(){ 
+   char letter = nameInput.charAt(activeInputIndex);
+   if(letter == 'A') letter = ' ';
+   else if(letter == ' ') letter = 'Z';
+   else  letter = char( int(letter) - 1 );
+   String newNameInput = "";
+   for ( int i =0; i < 3; i++){
+     if(i ==  activeInputIndex) newNameInput += letter;
+     else newNameInput += nameInput.charAt(i);
+   }
+   nameInput = newNameInput;
+   enterName();
+ }
+ void decrementActiveInput(){ 
+   char letter = nameInput.charAt(activeInputIndex);
+   if(letter == 'Z') letter = ' ';
+   else if(letter == ' ') letter = 'A';
+   else  letter = char(int(letter) +1 );
+   String newNameInput = "";
+   for ( int i =0; i < 3; i++){
+     if(i ==  activeInputIndex) newNameInput += letter;
+     else newNameInput += nameInput.charAt(i);
+   }
+   nameInput = newNameInput;
+   enterName();
+ }
 }
 
 void keyPressed(){
@@ -57,7 +94,24 @@ void keyPressed(){
   } else if( gameControls.gameStatus == "transport"){
     if( key == 'a' || ( key == CODED && keyCode == LEFT ) ) gameControls.leftOn();
     else if( key == 'd' || ( key == CODED && keyCode == RIGHT ) ) gameControls.rightOn();
-  }
+  } else if( gameControls.gameStatus == "lose-name"){
+    if( key == 'a' || ( key == CODED && keyCode == LEFT ) ) gameControls.leftIndexShift();
+    else if( key == 'd' || ( key == CODED && keyCode == RIGHT ) ) gameControls.rightIndexShift();
+    else if( key == 'w' || ( key == CODED && keyCode == UP ) ) gameControls.incrementActiveInput();
+    else if( key == 's' || ( key == CODED && keyCode == DOWN ) ) gameControls.decrementActiveInput();
+    else if( keyCode == ENTER ){
+      scoreObj.saveHighScore();
+      spaceObj.bk();
+      spaceObj.display();
+      scoreObj.display();
+      armyObj.display();
+      shipObj.display();
+      bulletsObj.display();
+      enemeyBulletsObj.display();
+      gameControls.gameLose();
+      loseScreen();
+    }
+  } 
 }
 
 void keyReleased(){

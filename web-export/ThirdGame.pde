@@ -1,4 +1,4 @@
-int WIDTH_ = 800; //<>//
+int WIDTH_ = 800;
 int HEIGHT_ = 650;
 Space spaceObj;
 Ship shipObj;
@@ -12,21 +12,21 @@ PFont Akashi48;
 PFont Akashi24;
 PFont Akashi36;
 
-void setup(){ //<>//
-  size(800,650);
+void setup(){
+  size(800,650); //<>//
   spaceObj = new Space();
   gameControls = new Controls();
   scoreObj = new Score();
   gameControls.restartGame();
   Akashi48 = createFont("Akashi", 48);
   Akashi36 = createFont("Akashi", 36);
-  Akashi24 = createFont("Akashi", 24); //<>//
+  Akashi24 = createFont("Akashi", 24);
 }
 
 
 void draw(){
-  if(gameControls.gameStatus == "start"){
-    spaceObj.bk();
+  if(gameControls.gameStatus == "start"){ //<>//
+    spaceObj.bk(); //<>//
     startScreen();
     spaceObj.display();
   }if(gameControls.gameStatus == "transport"){
@@ -45,7 +45,11 @@ void draw(){
     armyObj.display();
     shipObj.display();
     bulletsObj.display();
-    enemeyBulletsObj.display();
+    enemeyBulletsObj.display(); 
+  } else if (gameControls.gameStatus == "lose-name"){
+     spaceObj.bk();
+    spaceObj.display();
+    loseScreenName();
   }
 }
 class Bullets {
@@ -80,9 +84,13 @@ class Controls {
  boolean right; 
  boolean left;
  boolean gun;
- String gameStatus = "start";
+ String nameInput = "AAA";
+ int activeInputIndex = 0; 
+ String gameStatus = "lose-name";
  
  void restartGame() {
+  activeInputIndex = 0; 
+  nameInput = "AAA";
   right=false; left= false; 
   bulletsObj = new Bullets();
   armyObj = new EnemyArmy(39);
@@ -112,16 +120,49 @@ class Controls {
    }
  }
 
- void gameLose(){ 
-   gameStatus = "lose";
-   scoreObj.saveHighScore();
- }
+ void gameLose(){ gameStatus = "lose"; }
+ void gameLoseName(){ gameStatus = "lose-name"; }
  void rightOn(){ right=true; }
  void rightOff(){ right=false; }
  void leftOn(){ left=true; }
  void leftOff(){ left=false; }
  void gunOn(){ gun=true; }
  void gunOff(){ gun=false; }
+ 
+ void rightIndexShift(){ 
+   if( activeInputIndex < 2) activeInputIndex++; 
+   enterName();
+ }
+ void leftIndexShift(){ 
+   if( activeInputIndex > 0) activeInputIndex--; 
+   enterName();
+ }
+ void incrementActiveInput(){ 
+   char letter = nameInput.charAt(activeInputIndex);
+   if(letter == 'A') letter = ' ';
+   else if(letter == ' ') letter = 'Z';
+   else  letter = char( int(letter) - 1 );
+   String newNameInput = "";
+   for ( int i =0; i < 3; i++){
+     if(i ==  activeInputIndex) newNameInput += letter;
+     else newNameInput += nameInput.charAt(i);
+   }
+   nameInput = newNameInput;
+   enterName();
+ }
+ void decrementActiveInput(){ 
+   char letter = nameInput.charAt(activeInputIndex);
+   if(letter == 'Z') letter = ' ';
+   else if(letter == ' ') letter = 'A';
+   else  letter = char(int(letter) +1 );
+   String newNameInput = "";
+   for ( int i =0; i < 3; i++){
+     if(i ==  activeInputIndex) newNameInput += letter;
+     else newNameInput += nameInput.charAt(i);
+   }
+   nameInput = newNameInput;
+   enterName();
+ }
 }
 
 void keyPressed(){
@@ -135,7 +176,24 @@ void keyPressed(){
   } else if( gameControls.gameStatus == "transport"){
     if( key == 'a' || ( key == CODED && keyCode == LEFT ) ) gameControls.leftOn();
     else if( key == 'd' || ( key == CODED && keyCode == RIGHT ) ) gameControls.rightOn();
-  }
+  } else if( gameControls.gameStatus == "lose-name"){
+    if( key == 'a' || ( key == CODED && keyCode == LEFT ) ) gameControls.leftIndexShift();
+    else if( key == 'd' || ( key == CODED && keyCode == RIGHT ) ) gameControls.rightIndexShift();
+    else if( key == 'w' || ( key == CODED && keyCode == UP ) ) gameControls.incrementActiveInput();
+    else if( key == 's' || ( key == CODED && keyCode == DOWN ) ) gameControls.decrementActiveInput();
+    else if( keyCode == ENTER ){
+      scoreObj.saveHighScore();
+      spaceObj.bk();
+      spaceObj.display();
+      scoreObj.display();
+      armyObj.display();
+      shipObj.display();
+      bulletsObj.display();
+      enemeyBulletsObj.display();
+      gameControls.gameLose();
+      loseScreen();
+    }
+  } 
 }
 
 void keyReleased(){
@@ -505,7 +563,7 @@ class Score {
     noStroke();
     for ( int i = 0; i < topScores.length; i++){
       text( topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i), WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4 + 25, baseHeight + (40 * i), 2*WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i), 2*WIDTH_/3, height);
     }
   }
 
@@ -535,7 +593,7 @@ class Score {
       if( shipScore <= topScores[i].score ) yourScorePosition++;
     }
     print("yourScorePosition"); print(yourScorePosition);
-    HighScoreHolder addition = new HighScoreHolder( "ANON", shipScore);
+    HighScoreHolder addition = new HighScoreHolder( gameControls.nameInput, shipScore);
     topScores = (HighScoreHolder [])splice(topScores, addition, yourScorePosition);
     if(yourScorePosition == 0) highScore = shipScore;
     topScores = (HighScoreHolder [])subset(topScores, 0, 5);
@@ -608,8 +666,8 @@ class Score {
       shipObj = new Ship(false);
       shipObj.slideIn();
     } else {
-      gameControls.gameLose(); 
-      loseScreen();
+      gameControls.gameLoseName(); 
+      loseScreenName();
     }
   }
 }
@@ -624,7 +682,7 @@ void startScreen(){
   text("Galaxian Replica",0,height/3.5,width, height); 
   textFont(Akashi24);
   text("click to start",0, height/3.5 + 100, width, height);
-  scoreObj.displayTopHighscore( height/3.5 + 175 );
+  scoreObj.displayTopHighscore( int(height/3.5 + 225) );
 }
 
 void levelDisplay(){
@@ -646,7 +704,7 @@ void levelDisplay(){
 
 void pauseScreen(){
   rectMode(CORNER);
-  fill(0, 70); 
+  fill(0, 170); 
   noStroke();
   rect(0,0,width,height); 
   textAlign(CENTER); 
@@ -658,10 +716,53 @@ void pauseScreen(){
   text("Press p to continue playing " ,0,height/3 + 100 ,width, height); 
 }
 
+
+void loseScreenName(){
+  rectMode(CORNER);
+  noStroke();
+  fill(0, 170); 
+  rect(0,0,width,height); 
+  textAlign(CENTER); 
+  textLeading(20); 
+  fill(255);
+  textFont(Akashi48);
+  text("You lost!",0,height/5 - 50,width, height); 
+  textFont(Akashi24);
+  text("Your Score: " + scoreObj.shipScore,0,height/5 +20 ,width, height);
+  enterName();
+
+  textFont(Akashi24);
+  text( "press enter to continue", 0, int( width/3 * 1.8), width, height);
+}
+
+void enterName(){
+  fill(0);
+  rect( width/2-90, height/2, 180, 95);
+  stroke(255);
+  strokeWeight(5);
+  fill(0, 50);
+  rect(width/2-90, height/2, 180,60); 
+  strokeWeight(3);
+  line( width/2-75, height/2 + 50, width/2-35, height/2 +50 );
+  line( width/2-20, height/2 + 50, width/2+ 20, height/2 + 50 );
+  line( width/2+35, height/2 + 50, width/2+75, height/2 + 50 );
+  
+  fill(255);
+  int baseLeft = gameControls.activeInputIndex;
+  strokeWeight(5);
+  triangle( (width/2-55) + (baseLeft * 55), height/2 + 75, (width/2-67) + (baseLeft * 55), height/2 + 90, (width/2-43) + (baseLeft * 55), height/2 + 90);
+  textFont(Akashi36);
+  text( gameControls.nameInput[0], width/2-75, height/2  + 15, 40, 40 );
+  text( gameControls.nameInput[1] , width/2-20, height/2  + 15, 40, 40 );
+  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 );
+   
+  
+}
+
 void loseScreen(){
   rectMode(CORNER);
   noStroke();
-  fill(200, 80); 
+  fill(0, 170); 
   rect(0,0,width,height); 
   fill(100,255,255); 
   rect(width/2-90, height - 150, 180,50); 
@@ -671,14 +772,14 @@ void loseScreen(){
   textLeading(20); 
   fill(255);
   textFont(Akashi48);
-  text("You lost!",0,height/5,width, height); 
+  text("You lost!",0,height/5 - 50,width, height); 
   textFont(Akashi24);
-  text("Your Score: " + scoreObj.shipScore,0,height/5 + 50 ,width, height); 
+  text("Your Score: " + scoreObj.shipScore,0,height/5 + 20 ,width, height); 
   fill(0);
   text("Try Again?", width/2-75, height - 135, 150,50); 
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
-  scoreObj.displayTopHighscore( height/3.5 + 75);
+  scoreObj.displayTopHighscore(int( height/3.5 + 75));
 }
 
 void winScreen(){
