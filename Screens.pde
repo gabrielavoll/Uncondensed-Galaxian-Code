@@ -59,9 +59,12 @@ void loseScreenName(){
 
   textFont(Akashi24);
   text( "press enter to continue", 0, int( width/3 * 1.8), width, height);
+  noStroke();
 }
 
 void enterName(){
+  rectMode(CORNER);
+  noStroke();
   fill(0);
   rect( width/2-90, height/2, 180, 95);
   stroke(255);
@@ -80,9 +83,8 @@ void enterName(){
   textFont(Akashi36);
   text( gameControls.nameInput[0], width/2-75, height/2  + 15, 40, 40 );
   text( gameControls.nameInput[1] , width/2-20, height/2  + 15, 40, 40 );
-  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 );
-   
-  
+  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 ); 
+  noStroke();
 }
 
 void loseScreen(){
@@ -106,6 +108,7 @@ void loseScreen(){
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
   scoreObj.displayTopHighscore(int( height/3.5 + 75));
+  noStroke();
 }
 
 void winScreen(){

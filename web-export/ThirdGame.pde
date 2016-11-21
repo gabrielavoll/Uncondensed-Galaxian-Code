@@ -46,10 +46,10 @@ void draw(){
     shipObj.display();
     bulletsObj.display();
     enemeyBulletsObj.display(); 
-  } else if (gameControls.gameStatus == "lose-name"){
-     spaceObj.bk();
+  } else if (gameControls.gameStatus == "lose"){
+    spaceObj.bk();
     spaceObj.display();
-    loseScreenName();
+    loseScreen();
   }
 }
 class Bullets {
@@ -86,7 +86,7 @@ class Controls {
  boolean gun;
  String nameInput = "AAA";
  int activeInputIndex = 0; 
- String gameStatus = "lose-name";
+ String gameStatus = "start";
  
  void restartGame() {
   activeInputIndex = 0; 
@@ -139,26 +139,26 @@ class Controls {
  }
  void incrementActiveInput(){ 
    char letter = nameInput.charAt(activeInputIndex);
-   if(letter == 'A') letter = ' ';
-   else if(letter == ' ') letter = 'Z';
-   else  letter = char( int(letter) - 1 );
+   if(letter == "A") letter = ' ';
+   else if(letter == " ") letter = 'Z';
+   else  letter = char( nameInput.charCodeAt(activeInputIndex) - 1 );
    String newNameInput = "";
    for ( int i =0; i < 3; i++){
-     if(i ==  activeInputIndex) newNameInput += letter;
-     else newNameInput += nameInput.charAt(i);
+     if(i ==  activeInputIndex) newNameInput += str(letter);
+     else newNameInput += nameInput[i];
    }
    nameInput = newNameInput;
    enterName();
  }
  void decrementActiveInput(){ 
    char letter = nameInput.charAt(activeInputIndex);
-   if(letter == 'Z') letter = ' ';
-   else if(letter == ' ') letter = 'A';
-   else  letter = char(int(letter) +1 );
+   if(letter == "Z") letter = ' ';
+   else if(letter == " ") letter = 'A';
+   else  letter = char(nameInput.charCodeAt(activeInputIndex) +1 );
    String newNameInput = "";
    for ( int i =0; i < 3; i++){
-     if(i ==  activeInputIndex) newNameInput += letter;
-     else newNameInput += nameInput.charAt(i);
+     if(i ==  activeInputIndex) newNameInput += str(letter);
+     else newNameInput += nameInput[i];
    }
    nameInput = newNameInput;
    enterName();
@@ -183,15 +183,7 @@ void keyPressed(){
     else if( key == 's' || ( key == CODED && keyCode == DOWN ) ) gameControls.decrementActiveInput();
     else if( keyCode == ENTER ){
       scoreObj.saveHighScore();
-      spaceObj.bk();
-      spaceObj.display();
-      scoreObj.display();
-      armyObj.display();
-      shipObj.display();
-      bulletsObj.display();
-      enemeyBulletsObj.display();
       gameControls.gameLose();
-      loseScreen();
     }
   } 
 }
@@ -206,13 +198,20 @@ void keyReleased(){
 
 void mousePressed(){
   if(gameControls.gameStatus == "start") gameControls.transportStart();
-  else if(gameControls.gameStatus == "win"  || gameControls.gameStatus == "lose" ){
+  else if(gameControls.gameStatus == "win" ){
     if(mouseX >= width/2 - 75 && mouseX <= width/2 + 75 && mouseY >= height/2 && mouseY <= height/2 + 50){
       gameControls.restartGame(); 
       gameControls.transportStart();
     } else if(mouseX >= width/2 - 75 && mouseX <= width/2 + 75 && mouseY >= height/2 + 75 && mouseY <= height/2 + 125){
       exit();
     }
+  } else if (gameControls.gameStatus == "lose"){
+    if(mouseX >= width/2 - 90 && mouseX <= width/2 + 90 && mouseY >= height - 150 && mouseY <= height/2 + 100){
+      gameControls.restartGame(); 
+      gameControls.transportStart();
+    } else if(mouseX >= width/2 - 90 && mouseX <= width/2 + 90 && mouseY >= height - 75 && mouseY <= height/2 - 25){
+      exit();
+    } 
   }
   
 }
@@ -733,9 +732,12 @@ void loseScreenName(){
 
   textFont(Akashi24);
   text( "press enter to continue", 0, int( width/3 * 1.8), width, height);
+  noStroke();
 }
 
 void enterName(){
+  rectMode(CORNER);
+  noStroke();
   fill(0);
   rect( width/2-90, height/2, 180, 95);
   stroke(255);
@@ -754,9 +756,8 @@ void enterName(){
   textFont(Akashi36);
   text( gameControls.nameInput[0], width/2-75, height/2  + 15, 40, 40 );
   text( gameControls.nameInput[1] , width/2-20, height/2  + 15, 40, 40 );
-  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 );
-   
-  
+  text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 ); 
+  noStroke();
 }
 
 void loseScreen(){
@@ -780,6 +781,7 @@ void loseScreen(){
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
   scoreObj.displayTopHighscore(int( height/3.5 + 75));
+  noStroke();
 }
 
 void winScreen(){
