@@ -4,7 +4,7 @@ class Controls {
  boolean gun;
  String nameInput = "AAA";
  int activeInputIndex = 0; 
- String gameStatus = "start";
+ String gameStatus = "lose";
  
  void restartGame() {
   activeInputIndex = 0; 
@@ -124,10 +124,10 @@ void mousePressed(){
       exit();
     }
   } else if (gameControls.gameStatus == "lose"){
-    if(mouseX >= width/2 - 90 && mouseX <= width/2 + 90 && mouseY >= height - 150 && mouseY <= height/2 + 100){
+    if(mouseX >= 310 && mouseX <= 500 && mouseY >= 500 && mouseY <= 550){
       gameControls.restartGame(); 
       gameControls.transportStart();
-    } else if(mouseX >= width/2 - 90 && mouseX <= width/2 + 90 && mouseY >= height - 75 && mouseY <= height/2 - 25){
+    } else if(mouseX >= 310 && mouseX <= 500 && mouseY >= 570 && mouseY <= 620){
       exit();
     } 
   }
