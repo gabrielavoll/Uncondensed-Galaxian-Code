@@ -8,7 +8,7 @@ void startScreen(){
   text("Galaxian Replica",0,height/3.5,width, height); 
   textFont(Akashi24);
   text("click to start",0, height/3.5 + 100, width, height);
-  scoreObj.displayTopHighscore();
+  scoreObj.displayTopHighscore( height/3.5 + 175 );
 }
 
 void levelDisplay(){
@@ -45,23 +45,24 @@ void pauseScreen(){
 void loseScreen(){
   rectMode(CORNER);
   noStroke();
-  fill(200, 50); 
+  fill(200, 80); 
   rect(0,0,width,height); 
   fill(100,255,255); 
-  rect(width/2-90, height/2, 180,50); 
+  rect(width/2-90, height - 150, 180,50); 
   fill(0); 
-  rect(width/2-90, height/2 + 75, 180,50);
+  rect(width/2-90, height - 75, 180,50);
   textAlign(CENTER); 
   textLeading(20); 
   fill(255);
-  textFont(Akashi36);
-  text("You lost!",0,height/3,width, height); 
-  text("Your Score: " + scoreObj.shipScore,0,height/3 + 50 ,width, height); 
+  textFont(Akashi48);
+  text("You lost!",0,height/5,width, height); 
   textFont(Akashi24);
+  text("Your Score: " + scoreObj.shipScore,0,height/5 + 50 ,width, height); 
   fill(0);
-  text("Try Again?", width/2-75, height/2+15, 150,50); 
+  text("Try Again?", width/2-75, height - 135, 150,50); 
   fill(255); 
-  text("Exit", width/2-75, height/2+92, 150,50); 
+  text("Exit", width/2-75, height - 60, 150,50); 
+  scoreObj.displayTopHighscore( height/3.5 + 75);
 }
 
 void winScreen(){

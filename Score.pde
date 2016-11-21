@@ -14,7 +14,7 @@ class Score {
     extractHighscore();
   }
 
-  void displayTopHighscore() { 
+  void displayTopHighscore( int baseHeight ) { 
     rectMode(CORNER);
     textAlign(CENTER); 
     textLeading(20); 
@@ -22,8 +22,8 @@ class Score {
     fill(255);
     noStroke();
     for ( int i = 0; i < topScores.length; i++){
-      text( topScores[i].name + ": ",  WIDTH_/4, height/3.5 + 175 + (40 * i), WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4, height/3.5 + 175 + (40 * i), 2*WIDTH_/3, height);
+      text( topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i), WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 + 25, baseHeight + (40 * i), 2*WIDTH_/3, height);
     }
   }
 
