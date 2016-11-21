@@ -29,7 +29,6 @@ class Controls {
      winScreen();
    } else { // progress Level
      scoreObj.nextLevel();
-     scoreObj.saveHighScore();
      softRestartGame();
      transportStart();
    }

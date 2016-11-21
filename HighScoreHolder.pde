@@ -2,7 +2,7 @@ class HighScoreHolder {
   String name;
   int score;
   HighScoreHolder( String n, int s){
-    name = n;
+    name = n != "" ? n : "ANON";
     score = s;
   }
 }

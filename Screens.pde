@@ -8,6 +8,7 @@ void startScreen(){
   text("Galaxian Replica",0,height/3.5,width, height); 
   textFont(Akashi24);
   text("click to start",0, height/3.5 + 100, width, height);
+  scoreObj.displayTopHighscore();
 }
 
 void levelDisplay(){

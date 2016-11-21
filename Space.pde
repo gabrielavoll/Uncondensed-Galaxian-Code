@@ -8,9 +8,11 @@ class Space{
     for(int i = 0; i< 90; i ++) wStars = (PVector [])append(wStars, new PVector(random(0,WIDTH_), random(0,HEIGHT_)));
     for(int i = 0; i< 10; i ++) rStars = (PVector [])append(rStars, new PVector(random(0,WIDTH_), random(0,HEIGHT_)));
   } 
+  void bk(){
+    background(0);
+  }
   
   void display(){
-    background(0);
     noStroke();
     fill(255);
     for(int i = 0; i< 30; i ++) ellipse(wStars[i].x, (wStars[i].y + count) % HEIGHT_, 2,2); 

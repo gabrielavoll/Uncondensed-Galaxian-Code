@@ -25,9 +25,10 @@ void setup(){ //<>//
 
 
 void draw(){
-  if(gameControls.gameStatus == "start"){  //<>//
-    spaceObj.display();
+  if(gameControls.gameStatus == "start"){
+    spaceObj.bk();
     startScreen();
+    spaceObj.display();
   }if(gameControls.gameStatus == "transport"){
     if(scoreObj.transportStart == 0)  scoreObj.setTransportStart();
     spaceObj.hyperDisplay(scoreObj.transportTime());
@@ -38,6 +39,7 @@ void draw(){
       scoreObj.clearTransport();
     }  
   } else if(gameControls.gameStatus == "on"){
+    spaceObj.bk();
     spaceObj.display();
     scoreObj.display();
     armyObj.display();
