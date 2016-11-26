@@ -5,7 +5,7 @@ class Score {
   int lives;
   int level; 
   int topScoreIndicator;
-  int maxTopScores = 5;
+  int maxTopScores = 10;
   int transportStart; 
 
   Score() {
@@ -27,9 +27,13 @@ class Score {
       if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
       else if( topScoreIndicator == i ) fill(0);
       else fill(255);
-      text( topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i), WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i), 2*WIDTH_/3, height);
+      text( (i + 1) + "   " + topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i) - int(transportTime()/30) , WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i) - int(transportTime()/30), 2*WIDTH_/3, height);
     }
+    fill(0);
+    rect(WIDTH_/2 - 130, baseHeight - 70, 240, 65);
+    fill(0);
+    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 45);
   }
 
   void extractHighscore() {
@@ -58,7 +62,7 @@ class Score {
       HighScoreHolder addition = new HighScoreHolder( gameControls.nameInput, shipScore);
       topScores = (HighScoreHolder [])splice(topScores, addition, yourScorePosition);
       if(yourScorePosition == 0) highScore = shipScore;
-      topScores = (HighScoreHolder [])subset(topScores, 0, 5);
+      topScores = (HighScoreHolder [])subset(topScores, 0, maxTopScores);
       exportTopScores();
     }
   }
