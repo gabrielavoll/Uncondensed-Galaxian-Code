@@ -4,7 +4,7 @@ class Controls {
  boolean gun;
  String nameInput = "AAA";
  int activeInputIndex = 0; 
- String gameStatus = "lose";
+ String gameStatus = "start";
  
  void restartGame() {
   activeInputIndex = 0; 

@@ -46,9 +46,5 @@ void draw(){
     shipObj.display();
     bulletsObj.display();
     enemeyBulletsObj.display(); 
-  } else if (gameControls.gameStatus == "lose"){
-    spaceObj.bk();
-    spaceObj.display();
-    loseScreen();
   }
 }

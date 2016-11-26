@@ -85,6 +85,7 @@ void enterName(){
   text( gameControls.nameInput[1] , width/2-20, height/2  + 15, 40, 40 );
   text( gameControls.nameInput[2] , width/2+35, height/2  + 15, 40, 40 ); 
   noStroke();
+  strokeWeight(1);
 }
 
 void loseScreen(){

@@ -4,12 +4,15 @@ class Score {
   HighScoreHolder [] topScores;
   int lives;
   int level; 
+  int topScoreIndicator;
+  int maxTopScores = 5;
   int transportStart; 
 
   Score() {
     shipScore = 0;
     lives = 3;
     level = 1; 
+    topScoreIndicator = -1;
     transportStart = 0;
     extractHighscore();
   }
@@ -19,9 +22,11 @@ class Score {
     textAlign(CENTER); 
     textLeading(20); 
     textFont(Akashi24);
-    fill(255);
     noStroke();
     for ( int i = 0; i < topScores.length; i++){
+      if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
+      else if( topScoreIndicator == i ) fill(0);
+      else fill(255);
       text( topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i), WIDTH_/3, height);
       text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i), 2*WIDTH_/3, height);
     }
@@ -43,21 +48,19 @@ class Score {
   }
 
   void saveHighScore() {
-    print("saving");
-    print(shipScore);
     extractHighscore();
     int yourScorePosition = 0; 
-    print("topScores");
     for( int i = 0; i < topScores.length ; i++){
-      print(topScores[i].score);
       if( shipScore <= topScores[i].score ) yourScorePosition++;
     }
-    print("yourScorePosition"); print(yourScorePosition);
-    HighScoreHolder addition = new HighScoreHolder( gameControls.nameInput, shipScore);
-    topScores = (HighScoreHolder [])splice(topScores, addition, yourScorePosition);
-    if(yourScorePosition == 0) highScore = shipScore;
-    topScores = (HighScoreHolder [])subset(topScores, 0, 5);
-    exportTopScores();
+    if(yourScorePosition < maxTopScores){
+      topScoreIndicator = yourScorePosition;
+      HighScoreHolder addition = new HighScoreHolder( gameControls.nameInput, shipScore);
+      topScores = (HighScoreHolder [])splice(topScores, addition, yourScorePosition);
+      if(yourScorePosition == 0) highScore = shipScore;
+      topScores = (HighScoreHolder [])subset(topScores, 0, 5);
+      exportTopScores();
+    }
   }
   
   void exportTopScores(){
@@ -65,8 +68,8 @@ class Score {
     for( int i = 0; i < topScores.length; i++){
       exportString = (String [])append( exportString, topScores[i].score + " " + topScores[i].name );
     }
-    print("export");print(exportString);
     saveStrings("d.txt", exportString);
+    extractHighscore();
   }
 
   boolean isFinalLevel() {  
