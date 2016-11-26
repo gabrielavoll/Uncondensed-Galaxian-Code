@@ -7,6 +7,7 @@ class Score {
   int topScoreIndicator;
   int maxTopScores = 10;
   int transportStart; 
+  int scoreScrollStart;
 
   Score() {
     shipScore = 0;
@@ -14,6 +15,7 @@ class Score {
     level = 1; 
     topScoreIndicator = -1;
     transportStart = 0;
+    scoreScrollStart = 0;
     extractHighscore();
   }
 
@@ -23,17 +25,28 @@ class Score {
     textLeading(20); 
     textFont(Akashi24);
     noStroke();
+    int timeAddition = 0; 
+    println("time");
+    println( timeAddition);
     for ( int i = 0; i < topScores.length; i++){
       if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
       else if( topScoreIndicator == i ) fill(0);
       else fill(255);
-      text( (i + 1) + "   " + topScores[i].name + ": ",  WIDTH_/4, baseHeight + (40 * i) - int(transportTime()/30) , WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4 + 10, baseHeight + (40 * i) - int(transportTime()/30), 2*WIDTH_/3, height);
+      // 440    370 - 620
+      /// basHeight - 70   + 180 
+      if( int(transportTime()/1000) > 5 ){ 
+        if( scoreScrollStart == 0 )  scoreScrollStart = transportTime();
+        timeAddition = int((transportTime() - scoreScrollStart)/30) % 250 - 260; 
+      }
+      int position = ( baseHeight + (40 * i) - timeAddition ) % (baseHeight  + 200) ;
+  
+      text( (i + 1) + "   " + topScores[i].name + ": ",  WIDTH_/4,position , WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 + 10,position, 2*WIDTH_/3, height);
     }
-    fill(0);
-    rect(WIDTH_/2 - 130, baseHeight - 70, 240, 65);
-    fill(0);
-    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 45);
+    fill(200, 100, 100);
+    rect(WIDTH_/2 - 130, baseHeight - 210, 240, 200);
+    fill(200, 100, 100);
+    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 55);
   }
 
   void extractHighscore() {
