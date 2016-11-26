@@ -128,6 +128,7 @@ void mousePressed(){
       gameControls.restartGame(); 
       gameControls.transportStart();
     } else if(mouseX >= 310 && mouseX <= 500 && mouseY >= 570 && mouseY <= 620){
+      if(window && window.close) window.close();
       exit();
     } 
   }
