@@ -13,6 +13,7 @@ PFont Akashi24;
 PFont Akashi36;
 
 void setup(){
+  
   size(800,650); //<>//
   spaceObj = new Space();
   gameControls = new Controls();
@@ -49,6 +50,10 @@ void draw(){
   } else if(gameControls.gameStatus == "lose"){
    spaceObj.bk();
    loseScreen(); 
+   spaceObj.display();  
+ } else if(gameControls.gameStatus == "lose-name"){
+   spaceObj.bk();
+   loseScreenName(); 
    spaceObj.display();  
  }
 }
@@ -566,27 +571,25 @@ class Score {
     textFont(Akashi24);
     noStroke();
     int timeAddition = 0; 
-    println("time");
-    println( timeAddition);
     for ( int i = 0; i < topScores.length; i++){
       if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
       else if( topScoreIndicator == i ) fill(0);
-      else fill(255);
-      // 440    370 - 620
-      /// basHeight - 70   + 180 
-      if( int(transportTime()/1000) > 5 ){ 
+      else fill(255); 
+      if( int(transportTime()/1000) > 2 ){ 
         if( scoreScrollStart == 0 )  scoreScrollStart = transportTime();
-        timeAddition = int((transportTime() - scoreScrollStart)/30) % 250 - 260; 
+        timeAddition = int((transportTime() - scoreScrollStart)/30) ; 
       }
-      int position = ( baseHeight + (40 * i) - timeAddition ) % (baseHeight  + 200) ;
-  
+      int origpos = baseHeight  + 40 * i;
+      int heightScores = topScores.length * 50;
+      int position = ( origpos - ((timeAddition % heightScores ) - 180) ) % heightScores + baseHeight -50  ;
+    
       text( (i + 1) + "   " + topScores[i].name + ": ",  WIDTH_/4,position , WIDTH_/3, height);
       text( str(topScores[i].score) , WIDTH_/4 + 10,position, 2*WIDTH_/3, height);
     }
-    fill(200, 100, 100);
+    fill(200, 100, 100, 50);
     rect(WIDTH_/2 - 130, baseHeight - 210, 240, 200);
-    fill(200, 100, 100);
-    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 55);
+    fill(200, 100, 100 , 50);
+    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 60);
   }
 
   void extractHighscore() {

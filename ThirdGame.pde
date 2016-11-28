@@ -13,6 +13,7 @@ PFont Akashi24;
 PFont Akashi36;
 
 void setup(){
+  
   size(800,650); //<>//
   spaceObj = new Space();
   gameControls = new Controls();
@@ -49,6 +50,10 @@ void draw(){
   } else if(gameControls.gameStatus == "lose"){
    spaceObj.bk();
    loseScreen(); 
+   spaceObj.display();  
+ } else if(gameControls.gameStatus == "lose-name"){
+   spaceObj.bk();
+   loseScreenName(); 
    spaceObj.display();  
  }
 }
