@@ -547,6 +547,8 @@ class Score {
   int shipScore; 
   int highScore = 999;
   HighScoreHolder [] topScores;
+  int [] startOffset = {-120, -90, -40, 5, 50, 100};
+  int [] loseOffset = {25, 60, 105, 150, 200, 250};
   int lives;
   int level; 
   int topScoreIndicator;
@@ -564,32 +566,34 @@ class Score {
     extractHighscore();
   }
 
-  void displayTopHighscore( int baseHeight ) { 
+  void displayTopHighscore( int baseHeight, boolean loseScreen ) { 
     rectMode(CORNER);
     textAlign(CENTER); 
     textLeading(20); 
     textFont(Akashi24);
     noStroke();
     int timeAddition = 0; 
-    for ( int i = 0; i < topScores.length; i++){
+    int fakeHeight =1;
+    for ( int i = 0; i < topScores.length ; i++){
       if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
       else if( topScoreIndicator == i ) fill(0);
       else fill(255); 
       if( int(transportTime()/1000) > 2 ){ 
         if( scoreScrollStart == 0 )  scoreScrollStart = transportTime();
-        timeAddition = int((transportTime() - scoreScrollStart)/30) ; 
+        if(topScores.length > 5 )timeAddition = int((transportTime() - scoreScrollStart)/30) ; 
       }
-      int origpos = baseHeight  + 40 * i;
-      int heightScores = topScores.length * 50;
-      int position = ( origpos - ((timeAddition % heightScores ) - 180) ) % heightScores + baseHeight -50  ;
-    
-      text( (i + 1) + "   " + topScores[i].name + ": ",  WIDTH_/4,position , WIDTH_/3, height);
+      int [] offset = loseScreen == true ? loseOffset : startOffset;
+      int origpos = (baseHeight  + offset[max(0, topScores.length  - 5)]) + 40 * i;
+      int heightScores = max( 250, topScores.length * 47);
+      int position = ( origpos - ((timeAddition % heightScores ))) % heightScores + baseHeight - 40 ;
+      text((i+1), WIDTH_/4-70,position , WIDTH_/3, height);
+      text( topScores[i].name + ": ",  WIDTH_/4,position , WIDTH_/3, height);
       text( str(topScores[i].score) , WIDTH_/4 + 10,position, 2*WIDTH_/3, height);
     }
-    fill(200, 100, 100, 50);
-    rect(WIDTH_/2 - 130, baseHeight - 210, 240, 200);
-    fill(200, 100, 100 , 50);
-    rect(WIDTH_/2 - 130, baseHeight + 180, 240, 60);
+    fill(0);
+    rect(WIDTH_/2 - 150, baseHeight - 170, 300, 160);
+    fill(0);
+    rect(WIDTH_/2 - 150, baseHeight + 180, 300, 210);
   }
 
   void extractHighscore() {
@@ -698,7 +702,7 @@ class Score {
 void startScreen(){
   
   // 650 / 3.5 = 186 + 255 = 441
-  scoreObj.displayTopHighscore( int(height/3.5 + 225) );
+  scoreObj.displayTopHighscore( int(height/3.5 + 225), false );
   rectMode(CORNER);
   textAlign(CENTER); 
   textLeading(20); 
@@ -788,10 +792,10 @@ void enterName(){
 }
 
 void loseScreen(){
+  // 650 / 3.5 = 186 + 75 = 261
+  scoreObj.displayTopHighscore(int( height/3.5 + 75), true);
   rectMode(CORNER);
   noStroke();
-  fill(0, 170); 
-  rect(0,0,width,height); 
   fill(100,255,255); 
   rect(width/2-90, height - 150, 180,50); 
   fill(0); 
@@ -807,8 +811,6 @@ void loseScreen(){
   text("Try Again?", width/2-75, height - 135, 150,50); 
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
-  // 650 / 3.5 = 186 + 75 = 261
-  scoreObj.displayTopHighscore(int( height/3.5 + 75));
   noStroke();
 }
 

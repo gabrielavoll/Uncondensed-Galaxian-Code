@@ -1,7 +1,7 @@
 void startScreen(){
   
   // 650 / 3.5 = 186 + 255 = 441
-  scoreObj.displayTopHighscore( int(height/3.5 + 225) );
+  scoreObj.displayTopHighscore( int(height/3.5 + 225), false );
   rectMode(CORNER);
   textAlign(CENTER); 
   textLeading(20); 
@@ -91,10 +91,10 @@ void enterName(){
 }
 
 void loseScreen(){
+  // 650 / 3.5 = 186 + 75 = 261
+  scoreObj.displayTopHighscore(int( height/3.5 + 75), true);
   rectMode(CORNER);
   noStroke();
-  fill(0, 170); 
-  rect(0,0,width,height); 
   fill(100,255,255); 
   rect(width/2-90, height - 150, 180,50); 
   fill(0); 
@@ -110,8 +110,6 @@ void loseScreen(){
   text("Try Again?", width/2-75, height - 135, 150,50); 
   fill(255); 
   text("Exit", width/2-75, height - 60, 150,50); 
-  // 650 / 3.5 = 186 + 75 = 261
-  scoreObj.displayTopHighscore(int( height/3.5 + 75));
   noStroke();
 }
 
