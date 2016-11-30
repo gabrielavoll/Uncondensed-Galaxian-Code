@@ -55,6 +55,10 @@ void draw(){
    spaceObj.bk();
    loseScreenName(); 
    spaceObj.display();  
+ } else if(gameControls.gameStatus == "win"){
+   spaceObj.bk();
+   spaceObj.display(); 
+   winScreen();  
  }
 }
 class Bullets {
@@ -386,7 +390,7 @@ class EnemyArmy {
     startX = 100;
     startY = HEIGHT_/3;
     activeEnemyDirectionR = true;
-    int armyCount = 10;
+    int armyCount = 39;
     minArmyCountActive = 3 * armyCount/4;
     activeCountDown = 0;
     coolDownInterval  = 220;
@@ -564,7 +568,7 @@ class Score {
   Score() {
     shipScore = 0;
     lives = 3;
-    level = 2; 
+    level = 1; 
     topScoreIndicator = -1;
     transportStart = 0;
     scoreScrollStart = 0;
@@ -719,7 +723,6 @@ class Score {
 }
 
 void startScreen(){
-  
   // 650 / 3.5 = 186 + 255 = 441
   scoreObj.displayTopHighscore( int(height/3.5 + 225), false );
   rectMode(CORNER);
@@ -836,7 +839,7 @@ void loseScreen(){
 void winScreen(){
   rectMode(CORNER);
   noStroke();
-  fill(200, 50); 
+  fill(0, 50); 
   rect(0,0,width,height); 
   fill(100,255,255); 
   rect(width/2-90, height/2, 180,50); 
@@ -844,9 +847,11 @@ void winScreen(){
   rect(width/2-90, height/2 + 75, 180,50);
   textAlign(CENTER); 
   textLeading(20); 
-  fill(0);
+  textFont(Akashi48);
+  fill(255);
+  text("Congradulations",0,height/3 - 120,width, height); 
+  text("You won!",0,height/3 -50,width, height); 
   textFont(Akashi36);
-  text("Congradulations, you won!",0,height/3,width, height); 
   text("Your Score: " + scoreObj.shipScore,0,height/3 + 50 ,width, height); 
   textFont(Akashi24);
   fill(0);
