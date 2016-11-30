@@ -12,7 +12,7 @@ class Enemy {
   float speed = 0.02;
   int shooterCooldown = 0;
   int coolDownInterval = 90;
-  float [] levelSpeedMod = {0, 1, 1.4, 1.9 };
+  float [] levelSpeedMod = { 1, 1.4, 1.9, 2.4, 2.9 };
   
   void setActive(){ movementStatus = "active"; }
   void setReturning(){ movementStatus = "returning"; }
@@ -104,9 +104,9 @@ class Enemy {
       pushMatrix();
       translate(origin.x, origin.y);
       rotate(defRotation);
-      curveOrigin.x = curveOrigin.x + (sin(angle) *scalar * levelSpeedMod[scoreObj.level]);
+      curveOrigin.x = curveOrigin.x + (sin(angle) *scalar * 1);
       angle = angle + speed;
-      curveOrigin.y = (curveOrigin.y + (1* levelSpeedMod[scoreObj.level])) % (HEIGHT_ + 50);
+      curveOrigin.y = (curveOrigin.y + (1* levelSpeedMod[scoreObj.level - 1])) % (HEIGHT_ + 50);
     }
     origin = new PVector( origin.x + addition.x, origin.y + addition.y);
   }

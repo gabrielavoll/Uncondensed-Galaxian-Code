@@ -10,15 +10,16 @@ class EnemyArmy {
   int activeCountDown; 
   int coolDownInterval;
   int minArmyCountActive; 
-  float [] levelSpeedMod = {0, 1, 1.4, 1.9 };
+  float [] levelSpeedMod = { 1, 1.4, 1.9, 2.4, 2.9 };
   
-  EnemyArmy(int armyCount){
+  EnemyArmy(){
     origin = move = new PVector( 0, -320);
     directionR = false;
     army = new Enemy[0]; 
     startX = 100;
     startY = HEIGHT_/3;
     activeEnemyDirectionR = true;
+    int armyCount = 39;
     minArmyCountActive = 3 * armyCount/4;
     activeCountDown = 0;
     coolDownInterval  = 220;
@@ -129,13 +130,13 @@ class EnemyArmy {
     if(directionR) {
       if(origin.x >= 70){
         directionR = false;
-        move = new PVector( -1 * levelSpeedMod[scoreObj.level],  2);
-      } else move = new PVector(1 * levelSpeedMod[scoreObj.level], 0); 
+        move = new PVector( -1, 2 * levelSpeedMod[scoreObj.level - 1]);
+      } else move = new PVector(1, 0); 
     } else {
       if(origin.x <= -70){
         directionR = true;
-        move = new PVector( 1 * levelSpeedMod[scoreObj.level],  2);
-      } else move = new PVector(  -1 * levelSpeedMod[scoreObj.level], 0); 
+        move = new PVector( 1,  2 * levelSpeedMod[scoreObj.level - 1]);
+      } else move = new PVector(  -1, 0); 
     }
     origin = new PVector(origin.x + move.x, origin.y + move.y);
   }

@@ -98,7 +98,7 @@ class Controls {
   nameInput = "AAA";
   right=false; left= false; 
   bulletsObj = new Bullets();
-  armyObj = new EnemyArmy(39);
+  armyObj = new EnemyArmy();
   shipObj = new Ship(true);
   scoreObj = new Score();
   enemeyBulletsObj = new EnemyBullets();
@@ -108,7 +108,7 @@ class Controls {
    right=false; left= false; 
    enemeyBulletsObj = new EnemyBullets();
    bulletsObj = new Bullets();
-   armyObj = new EnemyArmy(39);
+   armyObj = new EnemyArmy();
  }
  
  void transportStart(){ gameStatus = "transport"; }
@@ -238,7 +238,7 @@ class Enemy {
   float speed = 0.02;
   int shooterCooldown = 0;
   int coolDownInterval = 90;
-  float [] levelSpeedMod = {0, 1, 1.4, 1.9 };
+  float [] levelSpeedMod = { 1, 1.4, 1.9, 2.4, 2.9 };
   
   void setActive(){ movementStatus = "active"; }
   void setReturning(){ movementStatus = "returning"; }
@@ -330,9 +330,9 @@ class Enemy {
       pushMatrix();
       translate(origin.x, origin.y);
       rotate(defRotation);
-      curveOrigin.x = curveOrigin.x + (sin(angle) *scalar * levelSpeedMod[scoreObj.level]);
+      curveOrigin.x = curveOrigin.x + (sin(angle) *scalar * 1);
       angle = angle + speed;
-      curveOrigin.y = (curveOrigin.y + (1* levelSpeedMod[scoreObj.level])) % (HEIGHT_ + 50);
+      curveOrigin.y = (curveOrigin.y + (1* levelSpeedMod[scoreObj.level - 1])) % (HEIGHT_ + 50);
     }
     origin = new PVector( origin.x + addition.x, origin.y + addition.y);
   }
@@ -377,15 +377,16 @@ class EnemyArmy {
   int activeCountDown; 
   int coolDownInterval;
   int minArmyCountActive; 
-  float [] levelSpeedMod = {0, 1, 1.4, 1.9 };
+  float [] levelSpeedMod = { 1, 1.4, 1.9, 2.4, 2.9 };
   
-  EnemyArmy(int armyCount){
+  EnemyArmy(){
     origin = move = new PVector( 0, -320);
     directionR = false;
     army = new Enemy[0]; 
     startX = 100;
     startY = HEIGHT_/3;
     activeEnemyDirectionR = true;
+    int armyCount = 10;
     minArmyCountActive = 3 * armyCount/4;
     activeCountDown = 0;
     coolDownInterval  = 220;
@@ -496,13 +497,13 @@ class EnemyArmy {
     if(directionR) {
       if(origin.x >= 70){
         directionR = false;
-        move = new PVector( -1 * levelSpeedMod[scoreObj.level],  2);
-      } else move = new PVector(1 * levelSpeedMod[scoreObj.level], 0); 
+        move = new PVector( -1, 2 * levelSpeedMod[scoreObj.level - 1]);
+      } else move = new PVector(1, 0); 
     } else {
       if(origin.x <= -70){
         directionR = true;
-        move = new PVector( 1 * levelSpeedMod[scoreObj.level],  2);
-      } else move = new PVector(  -1 * levelSpeedMod[scoreObj.level], 0); 
+        move = new PVector( 1,  2 * levelSpeedMod[scoreObj.level - 1]);
+      } else move = new PVector(  -1, 0); 
     }
     origin = new PVector(origin.x + move.x, origin.y + move.y);
   }
@@ -563,7 +564,7 @@ class Score {
   Score() {
     shipScore = 0;
     lives = 3;
-    level = 1; 
+    level = 2; 
     topScoreIndicator = -1;
     transportStart = 0;
     scoreScrollStart = 0;
@@ -645,7 +646,7 @@ class Score {
   }
 
   boolean isFinalLevel() {  
-    return level == 3;
+    return level == 5;
   }
 
   void nextLevel() { 

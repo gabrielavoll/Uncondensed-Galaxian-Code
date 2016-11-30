@@ -11,7 +11,7 @@ class Controls {
   nameInput = "AAA";
   right=false; left= false; 
   bulletsObj = new Bullets();
-  armyObj = new EnemyArmy(39);
+  armyObj = new EnemyArmy();
   shipObj = new Ship(true);
   scoreObj = new Score();
   enemeyBulletsObj = new EnemyBullets();
@@ -21,7 +21,7 @@ class Controls {
    right=false; left= false; 
    enemeyBulletsObj = new EnemyBullets();
    bulletsObj = new Bullets();
-   armyObj = new EnemyArmy(39);
+   armyObj = new EnemyArmy();
  }
  
  void transportStart(){ gameStatus = "transport"; }

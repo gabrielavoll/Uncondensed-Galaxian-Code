@@ -97,7 +97,7 @@ class Score {
   }
 
   boolean isFinalLevel() {  
-    return level == 3;
+    return level == 5;
   }
 
   void nextLevel() { 
