@@ -586,9 +586,9 @@ class Score {
       int origpos = (baseHeight  + offset[max(0, topScores.length  - 5)]) + 40 * i;
       int heightScores = max( 250, topScores.length * 47);
       int position = ( origpos - ((timeAddition % heightScores ))) % heightScores + baseHeight - 40 ;
-      text((i+1), WIDTH_/4-70,position , WIDTH_/3, height);
-      text( topScores[i].name + ": ",  WIDTH_/4,position , WIDTH_/3, height);
-      text( str(topScores[i].score) , WIDTH_/4 + 10,position, 2*WIDTH_/3, height);
+      text((i+1), WIDTH_/4-50,position , WIDTH_/3, height);
+      text( topScores[i].name + ": ",  WIDTH_/4 + 10,position , WIDTH_/3, height);
+      text( str(topScores[i].score) , WIDTH_/4 +30,position, 2*WIDTH_/3, height);
     }
     fill(0);
     rect(WIDTH_/2 - 150, baseHeight - 170, 300, 160);
