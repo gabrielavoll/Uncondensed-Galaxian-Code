@@ -9,6 +9,7 @@ class Score {
   int topScoreIndicator;
   int maxTopScores = 10;
   int transportStart; 
+  boolean activeScroll;
   int scoreScrollStart;
 
   Score() {
@@ -18,6 +19,7 @@ class Score {
     topScoreIndicator = -1;
     transportStart = 0;
     scoreScrollStart = 0;
+    activeScroll = false;
     extractHighscore();
   }
 
@@ -28,19 +30,22 @@ class Score {
     textFont(Akashi24);
     noStroke();
     int timeAddition = 0; 
-    int fakeHeight =1;
+    if( scoreScrollStart == 0 )  setScrollTime();
     for ( int i = 0; i < topScores.length ; i++){
-      if( topScoreIndicator == i && int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
+      if( topScoreIndicator == i && int(scrollTime()/500) % 2 == 0  ) fill(240, 207, 41);
       else if( topScoreIndicator == i ) fill(0);
       else fill(255); 
-      if( int(transportTime()/1000) > 2 ){ 
-        if( scoreScrollStart == 0 )  scoreScrollStart = transportTime();
-        if(topScores.length > 5 )timeAddition = int((transportTime() - scoreScrollStart)/30) ; 
+      if( int(scrollTime()/1000 > 2 ) || activeScroll ){
+        if(activeScroll == false) {
+          setScrollTime();
+          activeScroll = true; 
+        }
+        if(topScores.length > 5 ) timeAddition = int(scrollTime()/30) ;
       }
       int [] offset = loseScreen == true ? loseOffset : startOffset;
       int origpos = (baseHeight  + offset[max(0, topScores.length  - 5)]) + 40 * i;
       int heightScores = max( 250, topScores.length * 47);
-      int position = ( origpos - ((timeAddition % heightScores ))) % heightScores + baseHeight - 40 ;
+      int position = ( origpos - ((timeAddition % heightScores ))) % heightScores + baseHeight - 40;
       text((i+1), WIDTH_/4-50,position , WIDTH_/3, height);
       text( topScores[i].name + ": ",  WIDTH_/4 + 10,position , WIDTH_/3, height);
       text( str(topScores[i].score) , WIDTH_/4 +30,position, 2*WIDTH_/3, height);
@@ -128,13 +133,19 @@ class Score {
     stroke(255);
     ellipse(origin.x, origin.y, 2, 2);
   }
-
+  
+  void clearScrollTime() { scoreScrollStart = 0; }
+  void setScrollTime(){  scoreScrollStart = millis(); }
+  int scrollTime(){ return millis() - scoreScrollStart; }
+  
   void setTransportStart() { 
     transportStart = millis();
+    activeScroll = false;
   }
   void clearTransport() { 
     transportStart = 0;
   }
+  
   int transportTime() { 
     return millis() - transportStart;
   } 

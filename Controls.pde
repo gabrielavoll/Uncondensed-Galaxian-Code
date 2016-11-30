@@ -39,7 +39,10 @@ class Controls {
  }
 
  void gameLose(){ gameStatus = "lose"; }
- void gameLoseName(){ gameStatus = "lose-name"; }
+ void gameLoseName(){ 
+   gameStatus = "lose-name";
+   scoreObj.clearScrollTime();
+ }
  void rightOn(){ right=true; }
  void rightOff(){ right=false; }
  void leftOn(){ left=true; }
