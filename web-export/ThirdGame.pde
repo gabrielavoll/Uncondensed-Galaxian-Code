@@ -662,9 +662,13 @@ class Score {
     fill(255);
     textFont(Akashi24);
     text(shipScore, 100, 30);
-    stroke(255, 100, 100);
-    text("HI-SCORE", WIDTH_/2 - 50, 30);
     stroke(255);
+    if( shipScore > highScore){
+      if( int(transportTime()/500) % 2 == 0  ) fill(240, 207, 41);
+      else fill(0); 
+    }
+    
+    text("HI-SCORE", WIDTH_/2 - 50, 30);
     if (shipScore > highScore ) text(shipScore, WIDTH_/2 + 100, 30);
     else text(highScore, WIDTH_/2 + 100, 30);
 
